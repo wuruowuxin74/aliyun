@@ -1,0 +1,12 @@
+{
+    "name": "wuruowuxin74/aliyun",
+    "description": "aliyun-openapi-php-sdk",
+    "type": "library",
+    "require": {
+    },
+    "autoload": {
+        "psr-4": {
+            "Aliyun\\": "Aliyun/"
+        }
+    }
+}
