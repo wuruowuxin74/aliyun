@@ -41,9 +41,22 @@ class Client implements IAcsClient
     public $iClientProfile;
     public $__urlTestFlag__;
 
-    public function __construct($iClientProfile)
+    /**
+     * Client constructor.
+     * @param IClientProfile|string $iClientProfile_or_regionId
+     * @param null|string           $accessKeyId
+     * @param null|string           $accessSecret
+     * @throws \Exception
+     */
+    public function __construct($iClientProfile_or_regionId, $accessKeyId = null, $accessSecret = null)
     {
-        $this->iClientProfile  = $iClientProfile;
+        if ($iClientProfile_or_regionId instanceof IClientProfile) {
+            $this->iClientProfile = $iClientProfile_or_regionId;
+        } else if (is_string($iClientProfile_or_regionId) && is_string($accessKeyId) && is_string($accessSecret)) {
+            $this->iClientProfile = DefaultProfile::getProfile($iClientProfile_or_regionId, $accessKeyId, $accessSecret);
+        } else {
+            throw new \Exception('请传入IClientProfile对象 或 regionId,$accessKeyId和$accessSecret');
+        }
         $this->__urlTestFlag__ = false;
     }
 
@@ -142,5 +155,15 @@ class Client implements IAcsClient
         }
 
         return $respObject;
+    }
+
+    public function getRequest($type)
+    {
+        $class = "\Aliyun\{$type}\Request\Request";
+        if (class_exists($class)) {
+            return new $class();
+        } else {
+            return false;
+        }
     }
 }
