@@ -149,7 +149,7 @@ abstract class RoaAcsRequest extends AcsRequest
             if (isset($sortMapValue)) {
                 $queryString = $queryString."=".$sortMapValue;
             }
-            $queryString = $queryString.$querySeprator;
+            $queryString = $queryString.self::$querySeprator;
         }
         if (null==count($sortMap)) {
             $queryString = substr($queryString, 0, strlen($queryString)-1);
